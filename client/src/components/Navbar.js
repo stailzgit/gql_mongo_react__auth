@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context/authContext";
 import { AppBar, Box, Toolbar, Typography, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const onLogoutClick = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -13,22 +22,34 @@ const Navbar = () => {
             </Link>
           </Typography>
           <Box alignItems="right" sx={{ flexGrow: 1, textAlign: "right" }}>
-            <Link
-              to="/login"
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginRight: "10px",
-              }}
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              Register
-            </Link>
+            {user ? (
+              <Button
+                onClick={onLogoutClick}
+                style={{ textDecoration: "none", color: "while" }}
+              >
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Link
+                  to="/register"
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                    marginRight: "10px",
+                  }}
+                >
+                  Register
+                </Link>
+
+                <Link
+                  to="/login"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  Login
+                </Link>
+              </>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
